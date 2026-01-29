@@ -12,6 +12,6 @@
 
         public string ImageFile { get; set; } = string.Empty;
 
-        public List<string> Category { get; set; }
+        public List<string> Category { get; set; } = new();
     }
 }
