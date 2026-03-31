@@ -1,7 +1,22 @@
 var builder = WebApplication.CreateBuilder(args);
 
+var assembly = typeof(Program).Assembly;
+
+builder.Services.AddCarter();
+
+builder.Services.AddMediatR(configurations =>
+{
+    configurations.RegisterServicesFromAssembly(assembly);
+    configurations.AddOpenBehavior(typeof(ValidationBehavior<,>));
+    configurations.AddOpenBehavior(typeof(LoggingBehavior<,>));
+});
+
+
+
 var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
+
+app.MapCarter();
 
 app.Run();
