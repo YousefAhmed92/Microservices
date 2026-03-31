@@ -1,4 +1,5 @@
 ﻿
+using FluentValidation;
 using MediatR;
 
 namespace Catalog.API.Products.CreateProduct
@@ -8,11 +9,42 @@ namespace Catalog.API.Products.CreateProduct
 
     public record createProductResult(Guid Id);
 
-    public class CreateProductHandler (IDocumentSession session)
+    public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+    {
+        public CreateProductCommandValidator()
+        {
+            RuleFor(x => x.Name)
+                .NotEmpty()
+                .MaximumLength(100)
+                .WithMessage("name can not be null");
+
+            RuleFor(x => x.Description)
+                .NotEmpty()
+                .MaximumLength(500)
+                .WithMessage("Description can not be null");
+
+            RuleFor(x => x.Price)
+                .GreaterThan(0)
+                .WithMessage("price can not be null");
+          
+            RuleFor(x => x.ImageFile)
+                .MaximumLength(200)
+                .WithMessage("Description can not be null");
+
+            RuleFor(x => x.Category)
+                .NotEmpty()
+                .WithMessage("Description can not be null");
+        }
+    }
+
+    public class CreateProductCommandHandler
+        (IDocumentSession session, ILogger<CreateProductCommandHandler> logger)
         : ICommandHandler<CreateProductCommand, CreateProductResult>
     {
         public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
+            logger.LogInformation("create product command handler");
+
             var product = new Product
             {
                 Name = command.Name,
