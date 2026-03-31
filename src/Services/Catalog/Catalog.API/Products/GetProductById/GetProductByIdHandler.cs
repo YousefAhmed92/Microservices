@@ -17,7 +17,7 @@
             if (product is null)
             {
                 logger.LogWarning("Product with Id: {Id} not found", query.Id);
-                throw new ProductNotFoundException();
+                throw new ProductNotFoundException(query.Id);
             }
 
             return new GetProductByIdResult(product);
