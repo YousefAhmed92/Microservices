@@ -3,13 +3,17 @@ namespace Catalog.API.Products.GetProducts
 {
     public record GetProductResponse(IEnumerable<Product> Products);
 
+    public record GetProductRequest(int? PageNumber = 1, int? PageSize = 10);
+
     public class GetProductsEndPoint : ICarterModule
     {
         public void AddRoutes(IEndpointRouteBuilder app)
         {
-            app.MapGet("Products", async (ISender sender) =>
+            app.MapGet("Products", async ([AsParameters] GetProductRequest request, ISender sender) =>
             {
-                var result = await sender.Send(new GetProguctsQuery());
+                var query = request.Adapt<GetProguctsQuery>();
+
+                var result = await sender.Send(query);
 
                 var response = result.Adapt<GetProductResponse>();
 
