@@ -1,7 +1,4 @@
 ﻿
-using FluentValidation;
-using MediatR;
-
 namespace Catalog.API.Products.CreateProduct
 {
     public record CreateProductCommand(string Name, string Description, decimal Price, string ImageFile, List<string> Category)
