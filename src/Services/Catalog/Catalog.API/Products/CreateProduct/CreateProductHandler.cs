@@ -35,13 +35,11 @@ namespace Catalog.API.Products.CreateProduct
     }
 
     public class CreateProductCommandHandler
-        (IDocumentSession session, ILogger<CreateProductCommandHandler> logger)
+        (IDocumentSession session)
         : ICommandHandler<CreateProductCommand, CreateProductResult>
     {
         public async Task<CreateProductResult> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
-            logger.LogInformation("create product command handler");
-
             var product = new Product
             {
                 Name = command.Name,
