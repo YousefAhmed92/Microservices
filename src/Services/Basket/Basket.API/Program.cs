@@ -1,5 +1,9 @@
 var builder = WebApplication.CreateBuilder(args);
 
+
+// ADD THIS TEMPORARILY
+Console.WriteLine("CONNECTION STRING: " + builder.Configuration.GetConnectionString("Database"));
+
 var assembly = typeof(Program).Assembly;
 
 builder.Services.AddCarter();
