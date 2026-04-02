@@ -1,7 +1,5 @@
-﻿
-namespace Basket.API.Basket.StoreBasket
+﻿namespace Basket.API.Basket.StoreBasket
 {
-
     public record StoreBasketCommand(ShoppingCart ShoppingCart): ICommand<StoreBasketResult>;
 
     public record StoreBasketResult(string UserName);
@@ -20,16 +18,14 @@ namespace Basket.API.Basket.StoreBasket
         }
     }
 
-    public class StoreBasketCommandHandler : ICommandHandler<StoreBasketCommand, StoreBasketResult>
+    public class StoreBasketCommandHandler (IBasketRepository repository)
+        : ICommandHandler<StoreBasketCommand, StoreBasketResult>
     {
-        public async Task<StoreBasketResult> Handle(StoreBasketCommand request, CancellationToken cancellationToken)
+        public async Task<StoreBasketResult> Handle(StoreBasketCommand command, CancellationToken cancellationToken)
         {
-            ShoppingCart cart = request.ShoppingCart;
+            await repository.StoreBasket(command.ShoppingCart, cancellationToken);
 
-            //TODO: USE Marten UPSERT
-            //TODO: update cache
-
-            return new StoreBasketResult("Yousef");
+            return new StoreBasketResult(command.ShoppingCart.UserName);
         }
     }
 }

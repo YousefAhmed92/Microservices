@@ -6,13 +6,14 @@ namespace Basket.API.Basket.DeleteBasket
 
     public record DeleteBasketResult(bool IsSuccess);
 
-    public class DeleteBasketCommandHandler
+    public class DeleteBasketCommandHandler(IBasketRepository repository)
         : ICommandHandler<DeleteBasketCommand, DeleteBasketResult>
     {
         public async Task<DeleteBasketResult> Handle(DeleteBasketCommand request, CancellationToken cancellationToken)
         {
-            //TODO : Delete the basket from Redis and DB 
-             return new DeleteBasketResult(true);
+            await repository.DeleteBasket(request.UserName, cancellationToken);
+
+            return new DeleteBasketResult(true);
         }
     }
 }
