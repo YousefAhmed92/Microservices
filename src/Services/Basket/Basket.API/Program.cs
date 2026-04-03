@@ -1,4 +1,5 @@
 using BuildingBlocks.Exceptions.Handler;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,10 @@ builder.Services.AddStackExchangeRedisCache(cache =>
 
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
+builder.Services.AddHealthChecks()
+    .AddRedis(builder.Configuration.GetConnectionString("Redis")!)
+    .AddNpgSql(builder.Configuration.GetConnectionString("Database")!);
+
 var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
@@ -42,5 +47,11 @@ app.MapGet("/", () => "Hello World!");
 app.MapCarter();
 
 app.UseExceptionHandler(opt => { });
+
+app.UseHealthChecks("/health", 
+    new HealthCheckOptions
+    {
+        ResponseWriter = HealthChecks.UI.Client.UIResponseWriter.WriteHealthCheckUIResponse
+    });
 
 app.Run();
