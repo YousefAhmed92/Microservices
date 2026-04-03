@@ -1,3 +1,5 @@
+using BuildingBlocks.Exceptions.Handler;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -23,10 +25,22 @@ builder.Services.AddMarten(options =>
 
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
+builder.Services.Decorate<IBasketRepository, CachedBasketRepository>();
+
+builder.Services.AddStackExchangeRedisCache(cache =>
+{
+    cache.Configuration = builder.Configuration.GetConnectionString("Redis")!;
+});
+
+
+builder.Services.AddExceptionHandler<CustomExceptionHandler>();
+
 var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
 
 app.MapCarter();
+
+app.UseExceptionHandler(opt => { });
 
 app.Run();
