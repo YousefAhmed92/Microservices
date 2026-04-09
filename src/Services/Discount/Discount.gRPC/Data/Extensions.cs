@@ -4,13 +4,13 @@ namespace Discount.gRPC.Data
 {
     public static class Extensions
     {
-        public static IApplicationBuilder AutoMigrate(this IApplicationBuilder app)
+        public static async Task<IApplicationBuilder> AutoMigrate(this IApplicationBuilder app)
         {
             using var scope = app.ApplicationServices.CreateScope();
 
             using var context = scope.ServiceProvider.GetRequiredService<DiscountDbContext>();
 
-            context.Database.MigrateAsync();
+            await context.Database.MigrateAsync();
 
             return app;
         }
