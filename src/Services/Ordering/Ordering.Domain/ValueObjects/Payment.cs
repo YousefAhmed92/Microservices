@@ -11,5 +11,31 @@
         public string CVV { get; set; } = default!;
 
         public string PaymentMethod { get; set; } = default!;
+
+        protected Payment()
+        {
+        }
+
+        public Payment(string cardName, string cardNumber, string expiration, string cvv, string paymentMethod)
+        {
+            CardName = cardName;
+            CardNumber = cardNumber;
+            Expiration = expiration;
+            CVV = cvv;
+            PaymentMethod = paymentMethod;
+        }
+
+        public static Payment Of(string cardName, string cardNumber, string expiration, string cvv, string paymentMethod)
+        {
+            var payment = new Payment
+            {
+                CardName = cardName,
+                CardNumber = cardNumber,
+                Expiration = expiration,
+                CVV = cvv,
+                PaymentMethod = paymentMethod
+            };
+            return payment;
+        }
     }
 }
