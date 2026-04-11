@@ -15,7 +15,7 @@ namespace Ordering.Domain.Models
 
         public OrderItem(OrderId orderId, ProductId productId, int quantity, decimal unitPrice)
         {
-            Id = OrderItmeId.Of(Guid.NewGuid()),
+            Id = OrderItmeId.Of(Guid.NewGuid());
             OrderId = orderId;
             ProductId = productId;
             Quantity = quantity;

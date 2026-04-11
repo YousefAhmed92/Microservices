@@ -8,12 +8,17 @@
 
         public static Customer Create(CustomerId id, string name, string email)
         {
+            ArgumentException.ThrowIfNullOrEmpty(name);
+
+            ArgumentException.ThrowIfNullOrEmpty(email);
+
             var customer = new Customer
             {
                 Id = id,
                 Name = name,
                 Email = email
             };
+
             return customer;
         }
     }

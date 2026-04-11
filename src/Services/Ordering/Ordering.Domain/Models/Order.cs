@@ -4,7 +4,7 @@ using Ordering.Domain.ValueObjects;
 
 namespace Ordering.Domain.Models
 {
-    public class Order : Entity<OrderId>
+    public class Order : Aggregate<OrderId>
     {
         private readonly List<OrderItem> _orderItems = new();
 
@@ -27,5 +27,51 @@ namespace Ordering.Domain.Models
         public Address BillingAddress { get; set; } = default!;
 
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
+
+        public static Order Create(OrderId id, CustomerId customerId, OrderName orderName, Payment payment, Address shippingAddress, Address billingAddress)
+        {
+            var order = new Order
+            {
+                Id = id,
+                CustomerId = customerId,
+                OrderName = orderName,
+                Payment = payment,
+                ShippingAddress = shippingAddress,
+                BillingAddress = billingAddress,
+                Status = OrderStatus.Pending
+            };
+
+            order.AddDomainEvent(new OrderCreatedEvent(order));
+
+            return order;
+        }
+
+        public void Update(OrderName orderName, Address shippingaddress, Address billingaddress, Payment payment, OrderStatus status)
+        {
+            OrderName = orderName;
+            ShippingAddress = shippingaddress;
+            BillingAddress = billingaddress;
+            Payment = payment;
+            Status = status;
+
+            AddDomainEvent(new OrderUpdatedEvent(this));
+        }
+
+        public void AddOrderItem(ProductId productId, int quantity, decimal price)
+        {
+            var orderItem = new OrderItem(Id, productId, quantity, price);
+
+            _orderItems.Add(orderItem);
+        }
+
+        public void RemoveOrderItem(ProductId productId)
+        {
+            var orderItem = _orderItems.FirstOrDefault(x => x.ProductId == productId);
+
+            if (orderItem is not null)
+            {
+                _orderItems.Remove(orderItem);
+            }
+        }
     }
 }
