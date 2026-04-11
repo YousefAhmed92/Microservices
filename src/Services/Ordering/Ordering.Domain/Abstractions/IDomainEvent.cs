@@ -7,7 +7,7 @@ namespace Ordering.Domain.Abstractions
     {
         public Guid EventId => Guid.NewGuid();
 
-        public DateTime OccurredOn { get; }
+        public DateTime OccurredOn => DateTime.UtcNow;
 
         public string EventType => GetType().AssemblyQualifiedName;
     }
