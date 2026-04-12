@@ -28,6 +28,15 @@ services:
     ports:
       - "6379:6379"
 
+  orderdb:
+    container_name: orderdb
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=SWn@12345678
+    restart: always
+    ports:
+      - "1433:1433"
+
 
   catalog.api:
     environment:
@@ -78,10 +87,7 @@ services:
       - "6002:8080"
       - "6062:8081"
     volumes:
-      - ./Services/Discount/Discount.gRPC/discountdb:/data  # maps to local folder
+      - ./Services/Discount/Discount.gRPC/discountdb:/data
 
-      # - discountdb:/data
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      # - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
-      # - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
