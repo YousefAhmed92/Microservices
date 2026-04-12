@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-namespace Ordering.Infrastructure
+﻿namespace Ordering.Infrastructure
 {
     public static class DependencyInjection
     {
@@ -8,6 +6,9 @@ namespace Ordering.Infrastructure
         (this IServiceCollection services, IConfiguration configuration)
         { 
             var connectionString = configuration.GetConnectionString("DataBase");
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionString));
 
             return services;
         }

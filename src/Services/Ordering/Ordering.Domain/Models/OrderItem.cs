@@ -13,6 +13,10 @@ namespace Ordering.Domain.Models
 
         public decimal Price { get; private set; }
 
+        private OrderItem()
+        {
+            
+        }
         public OrderItem(OrderId orderId, ProductId productId, int quantity, decimal unitPrice)
         {
             Id = OrderItmeId.Of(Guid.NewGuid());
