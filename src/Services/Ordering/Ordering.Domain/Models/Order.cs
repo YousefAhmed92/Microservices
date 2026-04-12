@@ -29,16 +29,16 @@ namespace Ordering.Domain.Models
 
         public OrderStatus Status { get; set; } = OrderStatus.Pending;
 
-        public static Order Create(OrderId id, CustomerId customerId, OrderName orderName, Payment payment, Address shippingAddress, Address billingAddress)
+        public static Order Create(OrderId id, CustomerId customerId, OrderName orderName, Address shippingAddress, Address billingAddress, Payment payment)
         {
             var order = new Order
             {
                 Id = id,
                 CustomerId = customerId,
                 OrderName = orderName,
-                Payment = payment,
                 ShippingAddress = shippingAddress,
                 BillingAddress = billingAddress,
+                Payment = payment,
                 Status = OrderStatus.Pending
             };
 

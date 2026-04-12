@@ -10,13 +10,13 @@
 
         public string CVV { get; set; } = default!;
 
-        public string PaymentMethod { get; set; } = default!;
+        public int PaymentMethod { get; set; } = default!;
 
         protected Payment()
         {
         }
 
-        public Payment(string cardName, string cardNumber, string expiration, string cvv, string paymentMethod)
+        public Payment(string cardName, string cardNumber, string expiration, string cvv, int paymentMethod)
         {
             CardName = cardName;
             CardNumber = cardNumber;
@@ -25,7 +25,7 @@
             PaymentMethod = paymentMethod;
         }
 
-        public static Payment Of(string cardName, string cardNumber, string expiration, string cvv, string paymentMethod)
+        public static Payment Of(string cardName, string cardNumber, string expiration, string cvv, int paymentMethod)
         {
             var payment = new Payment
             {
