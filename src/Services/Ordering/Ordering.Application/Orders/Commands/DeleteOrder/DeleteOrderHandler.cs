@@ -8,7 +8,7 @@
             var orderId = OrderId.Of(command.OrderID);
 
             var order = await context.orders.
-                FindAsync(new object[] { orderId }, cancellationToken);
+                FindAsync( [orderId], cancellationToken);
 
             if (order is null)
             {
