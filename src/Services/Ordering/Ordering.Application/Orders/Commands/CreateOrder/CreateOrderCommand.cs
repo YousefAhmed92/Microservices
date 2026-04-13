@@ -5,9 +5,9 @@ using Ordering.Application.Dtos;
 namespace Ordering.Application.Orders.Commands.CreateOrder
 {
     public record CreateOrderCommand(OrderDto Order) 
-        : ICommand<CreateOrderCommandResult>;
+        : ICommand<CreateOrderResult>;
 
-    public record CreateOrderCommandResult(Guid OrderId);
+    public record CreateOrderResult(Guid OrderId);
 
     public class CreateOrderCommandValidator : AbstractValidator<CreateOrderCommand>
     {

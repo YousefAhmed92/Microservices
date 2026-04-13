@@ -1,9 +1,9 @@
 ﻿namespace Ordering.Application.Orders.Commands.CreateOrder
 {
     public class CreateOrderHandler(IApplicationDbContext context)
-        : ICommandHandler<CreateOrderCommand, CreateOrderCommandResult>
+        : ICommandHandler<CreateOrderCommand, CreateOrderResult>
     {
-        public async Task<CreateOrderCommandResult> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
+        public async Task<CreateOrderResult> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
         {
             var order = CreateNewOrder(command.Order);
 
@@ -11,7 +11,7 @@
 
             await context.SaveChangesAsync(cancellationToken);
 
-            return new CreateOrderCommandResult(order.Id.Value);
+            return new CreateOrderResult(order.Id.Value);
         }
 
         private Order CreateNewOrder(OrderDto orderDto)
