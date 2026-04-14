@@ -4,7 +4,7 @@ namespace Ordering.API.Endpoints
 {
     public record CreateOrderRequest(OrderDto Order);
 
-    public record CreateOrderResponse(Guid Id);
+    public record CreateOrderResponse(Guid OrderId);
 
     public class CreateOrder : ICarterModule
     {
@@ -21,7 +21,7 @@ namespace Ordering.API.Endpoints
                 // map the result into a response
                 var response = result.Adapt<CreateOrderResponse>();
 
-                return Results.Created($"/orders/{response.Id}", response);
+                return Results.Created($"/orders/{response.OrderId}", response);
             });
         }
     }
