@@ -11,7 +11,7 @@ namespace Ordering.Application.Orders.Queries.GetOrdersByName
                 .Include(x => x.OrderItems)
                 .AsNoTracking()
                 .Where(x => x.OrderName.Value.Contains(query.name))
-                .OrderBy(x => x.OrderName)
+                .OrderBy(x => x.OrderName.Value)
                 .ToListAsync();
 
 
