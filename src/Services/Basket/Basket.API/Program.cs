@@ -1,6 +1,7 @@
 using BuildingBlocks.Exceptions.Handler;
 using BuildingBlocksMessaging.MassTransit;
 using Discount.gRPC;
+using JasperFx;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Weasel.Core;
 
@@ -20,11 +21,9 @@ builder.Services.AddMediatR(configurations =>
 builder.Services.AddMarten(options =>
 {
     options.Connection(builder.Configuration.GetConnectionString("Database")!);
-    options.AutoCreateSchemaObjects = AutoCreate.CreateOrUpdate;
     options.Schema.For<ShoppingCart>().Identity(x => x.UserName);
 })
-    .UseLightweightSessions()
-    .ApplyAllDatabaseChangesOnStartup();
+    .UseLightweightSessions();
 
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
