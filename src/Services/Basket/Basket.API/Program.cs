@@ -2,12 +2,9 @@ using BuildingBlocks.Exceptions.Handler;
 using BuildingBlocksMessaging.MassTransit;
 using Discount.gRPC;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Weasel.Core;
 
 var builder = WebApplication.CreateBuilder(args);
-
-
-// ADD THIS TEMPORARILY
-Console.WriteLine("CONNECTION STRING: " + builder.Configuration.GetConnectionString("Database"));
 
 var assembly = typeof(Program).Assembly;
 
@@ -23,8 +20,11 @@ builder.Services.AddMediatR(configurations =>
 builder.Services.AddMarten(options =>
 {
     options.Connection(builder.Configuration.GetConnectionString("Database")!);
+    options.AutoCreateSchemaObjects = AutoCreate.CreateOrUpdate;
     options.Schema.For<ShoppingCart>().Identity(x => x.UserName);
-}).UseLightweightSessions();
+})
+    .UseLightweightSessions()
+    .ApplyAllDatabaseChangesOnStartup();
 
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
