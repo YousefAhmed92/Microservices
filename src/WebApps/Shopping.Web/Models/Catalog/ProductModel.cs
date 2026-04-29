@@ -15,7 +15,7 @@
         public List<string> Category { get; set; } = new();
     }
 
-    public record GetProguctByIdResponse(ProductModel Product);
+    public record GetProductByIdResponse(ProductModel Product);
 
     public record GetProductResponse(IEnumerable<ProductModel> Products);
 
