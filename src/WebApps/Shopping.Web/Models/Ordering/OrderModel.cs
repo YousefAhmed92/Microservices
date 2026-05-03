@@ -51,7 +51,7 @@
         Draft = 6
     }
 
-    public record GetOrdersResponse(PaginationResult<OrderModel> Orders);
+    public record GetOrdersResponse(PaginatedResult<OrderModel> Orders);
 
     public record GetOrderByCustomerResponse(IEnumerable<OrderModel> Orders);
 

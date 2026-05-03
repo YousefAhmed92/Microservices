@@ -1,28 +1,31 @@
 ﻿using BuildingBlocks.Pagination;
 
-namespace Ordering.Application.Orders.Queries.GetOrders
+namespace Ordering.Application.Orders.Queries.GetOrders;
+public class GetOrdersHandler(IApplicationDbContext dbContext)
+    : IQueryHandler<GetOrdersQuery, GetOrdersResult>
 {
-    public class GetOrdersHandler(IApplicationDbContext context)
-        : IQueryHandler<GetOrdersQuery, GetOrdersResult>
+    public async Task<GetOrdersResult> Handle(GetOrdersQuery query, CancellationToken cancellationToken)
     {
-        public async Task<GetOrdersResult> Handle(GetOrdersQuery query, CancellationToken cancellationToken)
-        {
-            var pageIndex= query.PaginationRequest.pageIndex;
+        // get orders with pagination
+        // return result
 
-            var pageSize = query.PaginationRequest.pageSize;
+        var pageIndex = query.PaginationRequest.PageIndex;
+        var pageSize = query.PaginationRequest.PageSize;
 
-            var totalCount = await context.orders.LongCountAsync(cancellationToken);
+        var totalCount = await dbContext.orders.LongCountAsync(cancellationToken);
 
-            var orders = await context.orders
-                .Include(x => x.OrderItems)
-                .OrderBy(x => x.OrderName.Value)
-                .Skip(pageIndex * pageSize)
-                .Take(pageSize)
-                .ToListAsync(cancellationToken);
+        var orders = await dbContext.orders
+                       .Include(o => o.OrderItems)
+                       .OrderBy(o => o.OrderName.Value)
+                       .Skip(pageSize * pageIndex)
+                       .Take(pageSize)
+                       .ToListAsync(cancellationToken);
 
-            return new GetOrdersResult(
-                new PaginationResult<OrderDto>
-                (pageIndex, pageSize, totalCount, orders.ToOrderDtoList()));
-        }
+        return new GetOrdersResult(
+            new PaginatedResult<OrderDto>(
+                pageIndex,
+                pageSize,
+                totalCount,
+                orders.ToOrderDtoList()));
     }
 }
