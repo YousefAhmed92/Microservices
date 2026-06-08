@@ -1,7 +1,4 @@
-﻿using Ordering.Domain.Abstractions;
-using Ordering.Domain.ValueObjects;
-
-namespace Ordering.Domain.Models
+﻿namespace Ordering.Domain.Models
 {
     public class OrderItem : Entity<OrderItmeId>
     {
@@ -17,6 +14,7 @@ namespace Ordering.Domain.Models
         {
             
         }
+
         public OrderItem(OrderId orderId, ProductId productId, int quantity, decimal unitPrice)
         {
             Id = OrderItmeId.Of(Guid.NewGuid());
