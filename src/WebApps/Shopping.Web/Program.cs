@@ -26,6 +26,28 @@ builder.Services.AddRefitClient<ICatalogService>()
     })
     .AddHttpMessageHandler<TransientGatewayRetryHandler>();
 
+builder.Services.AddRefitClient<IBasketService>()
+    .ConfigureHttpClient(c =>
+    {
+        c.BaseAddress = new Uri(builder.Configuration["ApiSetting:GatewayAddress"]!);
+        c.DefaultRequestVersion = System.Net.HttpVersion.Version11;
+        c.DefaultVersionPolicy = HttpVersionPolicy.RequestVersionExact;
+    })
+    .ConfigurePrimaryHttpMessageHandler(() =>
+    {
+        var handler = new HttpClientHandler();
+
+        if (builder.Environment.IsDevelopment())
+        {
+            handler.ServerCertificateCustomValidationCallback =
+                HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+        }
+
+        return handler;
+    })
+    .AddHttpMessageHandler<TransientGatewayRetryHandler>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
